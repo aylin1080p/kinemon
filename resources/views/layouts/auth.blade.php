@@ -41,6 +41,16 @@
                     </div>
                 </div>
             </div>
+        @elseif(session()->has('message'))
+            <div class="toast pwa-install-alert shadow bg-success" role="alert" aria-live="assertive" aria-atomic="true"
+                 data-bs-delay="5000" data-bs-autohide="true">
+                <div class="toast-body">
+                    <div class="content d-flex align-items-center mb-2">
+                        <h6 class="mb-0 text-light">{{ session()->get('message') }}</h6>
+                        <button class="btn-close ms-auto" type="button" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
         @endif
 
         <!-- Preloader-->

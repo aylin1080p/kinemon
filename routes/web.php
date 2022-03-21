@@ -13,26 +13,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\EventController@index')->middleware(['auth']);
+Route::group(['middleware' => ['auth']], function() {
+    Route::group(['middleware' => ['verified']], function() {
+        Route::get('/', 'App\Http\Controllers\EventController@index');
 
-Route::get('/profile', 'App\Http\Controllers\ProfileController@edit')->middleware(['auth']);
-Route::post('/profile', 'App\Http\Controllers\ProfileController@update')->middleware(['auth']);
-Route::get('/profile/password', 'App\Http\Controllers\ProfileController@password')->middleware(['auth']);
-Route::post('/profile/password', 'App\Http\Controllers\ProfileController@updatePassword')->middleware(['auth']);
+        Route::get('/profile', 'App\Http\Controllers\ProfileController@edit');
+        Route::post('/profile', 'App\Http\Controllers\ProfileController@update');
+        Route::get('/profile/password', 'App\Http\Controllers\ProfileController@password');
+        Route::post('/profile/password', 'App\Http\Controllers\ProfileController@updatePassword');
 
-Route::get('/event/detail/{event}', 'App\Http\Controllers\EventController@detail')->middleware(['auth']);
-Route::get('/event/accept/{event}', 'App\Http\Controllers\EventController@accept')->middleware(['auth']);
-Route::get('/event/reject/{event}', 'App\Http\Controllers\EventController@reject')->middleware(['auth']);
-Route::get('/event/create', 'App\Http\Controllers\EventController@create')->middleware(['auth']);
-Route::post('/event/create', 'App\Http\Controllers\EventController@store')->middleware(['auth']);
+        Route::get('/event/detail/{event}', 'App\Http\Controllers\EventController@detail');
+        Route::get('/event/accept/{event}', 'App\Http\Controllers\EventController@accept');
+        Route::get('/event/reject/{event}', 'App\Http\Controllers\EventController@reject');
+        Route::get('/event/create', 'App\Http\Controllers\EventController@create');
+        Route::post('/event/create', 'App\Http\Controllers\EventController@store');
 
-Route::get('/friends', 'App\Http\Controllers\FriendController@friend')->middleware(['auth']);
-Route::get('/friends/{user}', 'App\Http\Controllers\FriendController@detail')->middleware(['auth']);
-Route::get('/friends/{user}/add', 'App\Http\Controllers\FriendController@add')->middleware(['auth']);
-Route::get('/friends/{user}/remove', 'App\Http\Controllers\FriendController@remove')->middleware(['auth']);
+        Route::get('/friends', 'App\Http\Controllers\FriendController@friend');
+        Route::get('/friends/{user}', 'App\Http\Controllers\FriendController@detail');
+        Route::get('/friends/{user}/add', 'App\Http\Controllers\FriendController@add');
+        Route::get('/friends/{user}/remove', 'App\Http\Controllers\FriendController@remove');
 
-Route::get('/settings', 'App\Http\Controllers\SettingsController@settings')->middleware(['auth']);
+        Route::get('/settings', 'App\Http\Controllers\SettingsController@settings');
 
-Route::get('/notifications', 'App\Http\Controllers\NotificationController@notifications')->middleware(['auth']);
+        Route::get('/notifications', 'App\Http\Controllers\NotificationController@notifications');
+    });
+});
+
+Route::get('/email/verify', 'App\Http\Controllers\VerificationController@show')->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', 'App\Http\Controllers\VerificationController@verify')->name('verification.verify');
 
 require __DIR__.'/auth.php';

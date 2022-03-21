@@ -32,6 +32,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if (!$request->user()->hasVerifiedEmail()) {
+            $this->destroy($request);
+
+            return redirect('login')->withErrors(['msg' => 'Please verify your email!']);
+        }
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
