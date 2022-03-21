@@ -69,7 +69,7 @@ class EventController extends Controller
     {
         return view('events/detail', compact('event'));
     }
-
+// Kabulse çalıştır,,,,,kontroller unutma
     public function accept(Event $event)
     {
         if (!$hasInvite = $event->invites()->where('invitee_id', auth()->id())->first()) {
@@ -86,7 +86,7 @@ class EventController extends Controller
 
         return back()->with('message', 'Success!');
     }
-
+ //// red ise çalıştır acceptten copy al fix et
     public function reject(Event $event)
     {
         if (!$hasInvite = $event->invites()->where('invitee_id', auth()->id())->first()) {
